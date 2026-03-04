@@ -23,11 +23,16 @@ resource "terraform_data" "repo-clone" {
 }
 
 resource "github_repository_file" "readme" {
-  for_each            = var.repos
-  repository          = github_repository.mtc_repo[each.key].name
-  branch              = "main"
-  file                = "README.md"
-  content             = "# This is a${var.env} ${each.key} repository is for ${each.value.lang} developers."
+  for_each   = var.repos
+  repository = github_repository.mtc_repo[each.key].name
+  branch     = "main"
+  file       = "README.md"
+  content = templatefile("templates/readme.tftpl", {
+    lang = each.value.lang,
+    name = data.github_user.current.name,
+    repo = each.key,
+    env  = var.env
+  })
   overwrite_on_create = true
 }
 
@@ -38,6 +43,15 @@ resource "github_repository_file" "repos" {
   file                = each.value.filename
   content             = "#Hello ${each.value.lang}"
   overwrite_on_create = true
+  lifecycle {
+    ignore_changes = [
+      content
+    ]
+  }
+}
+
+data "github_user" "current" {
+  username = ""
 }
 
 output "repo-names" {
@@ -45,3 +59,7 @@ output "repo-names" {
   description = "Repository Names and URL"
   sensitive   = false
 }
+
+# output "current_github_login" {
+#   value = data.github_user.current.name
+# }

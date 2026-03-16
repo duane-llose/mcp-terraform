@@ -6,7 +6,7 @@ terraform {
   }
 }
 
-provider "github" {
-  owner = "duane-llose"
-  # token = var.token
-}
+# provider "github" {
+#   owner = "duane-llose"
+#   # token = var.token
+# }

@@ -1,0 +1,4 @@
+environment,lang,filename,pages
+infra,terraform,main.tf,false
+backend,python,main.py,false
+frontend,javascript,main.js,false

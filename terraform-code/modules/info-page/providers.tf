@@ -5,8 +5,3 @@ terraform {
     }
   }
 }
-
-provider "github" {
-  owner = "duane-llose"
-  # token = var.token
-}
